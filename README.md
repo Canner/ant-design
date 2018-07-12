@@ -4,6 +4,28 @@
   </a>
 </p>
 
+## Deploy to Canner CDN
+
+use Canner's styles in Canner CDN
+
+build script
+
+```
+npm run dist
+```
+
+deploy to prod
+
+```
+npm run prod:publish
+```
+
+deploy to staging
+
+```
+npm run staging:publish
+```
+
 # Ant Design
 
 [![](https://img.shields.io/travis/ant-design/ant-design/master.svg?style=flat-square)](https://travis-ci.org/ant-design/ant-design)

@@ -126,6 +126,9 @@
     "eslint-tinker": "^0.5.0",
     "fetch-jsonp": "^1.0.3",
     "glob": "^7.1.1",
+    "gulp": "^3.9.1",
+    "gulp-cloudfront-invalidate": "^0.1.5",
+    "gulp-s3": "^0.11.0",
     "immutability-helper": "^2.5.0",
     "intersection-observer": "^0.5.0",
     "jest": "^23.0.0",
@@ -202,7 +205,9 @@
     "lint-staged": "lint-staged",
     "lint-staged:ts": "tsc && node node_modules/tslint/bin/tslint",
     "lint-staged:es": "eslint ./.eslintrc.js ./webpack.config.js",
-    "lint-staged:demo": "cross-env RUN_ENV=DEMO eslint --ext '.md'"
+    "lint-staged:demo": "cross-env RUN_ENV=DEMO eslint --ext '.md'",
+    "prod:publish": "NODE_ENV='production' gulp && gulp invalidate",
+    "staging:publish": "NODE_ENV='staging' gulp && gulp invalidate"
   },
   "lint-staged": {
     "components/**/*.tsx": [
