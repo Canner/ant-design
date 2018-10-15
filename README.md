@@ -14,6 +14,12 @@ build script
 npm run dist
 ```
 
+build minifiy files
+
+```
+npm run compile
+````
+
 deploy to prod
 
 ```
