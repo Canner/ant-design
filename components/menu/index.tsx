@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { findDOMNode } from 'react-dom';
 import RcMenu, { Divider, ItemGroup } from 'rc-menu';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import classNames from 'classnames';
 import animation from '../_util/openAnimation';
 import warning from '../_util/warning';
@@ -96,10 +96,10 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
     );
 
     let openKeys;
-    if ('defaultOpenKeys' in props) {
-      openKeys = props.defaultOpenKeys;
-    } else if ('openKeys' in props) {
+    if ('openKeys' in props) {
       openKeys = props.openKeys;
+    } else if ('defaultOpenKeys' in props) {
+      openKeys = props.defaultOpenKeys;
     }
 
     this.state = {

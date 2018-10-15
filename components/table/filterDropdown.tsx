@@ -11,6 +11,13 @@ import Radio from '../radio';
 import FilterDropdownMenuWrapper from './FilterDropdownMenuWrapper';
 import { FilterMenuProps, FilterMenuState, ColumnProps, ColumnFilterItem } from './interface';
 
+function stopPropagation(e: React.SyntheticEvent<any>) {
+  e.stopPropagation();
+  if (e.nativeEvent.stopImmediatePropagation) {
+    e.nativeEvent.stopImmediatePropagation();
+  }
+}
+
 export default class FilterMenu<T> extends React.Component<FilterMenuProps<T>, FilterMenuState> {
   static defaultProps = {
     handleFilter() {},
@@ -63,6 +70,10 @@ export default class FilterMenu<T> extends React.Component<FilterMenuProps<T>, F
     }
   }
 
+  getDropdownVisible() {
+    return this.neverShown ? false : this.state.visible;
+  }
+
   setNeverShown = (column: ColumnProps<T>) => {
     const rootNode = ReactDOM.findDOMNode(this);
     const filterBelongToScrollBody = !!closest(rootNode, `.ant-table-scroll`);
@@ -97,7 +108,10 @@ export default class FilterMenu<T> extends React.Component<FilterMenuProps<T>, F
 
   handleConfirm = () => {
     this.setVisible(false);
-    this.confirmFilter();
+
+    // Call `setSelectedKeys` & `confirm` in the same time will make filter data not up to date
+    // https://github.com/ant-design/ant-design/issues/12284
+    this.setState({}, this.confirmFilter);
   }
 
   onVisibleChange = (visible: boolean) => {
@@ -108,8 +122,10 @@ export default class FilterMenu<T> extends React.Component<FilterMenuProps<T>, F
   }
 
   confirmFilter() {
-    if (this.state.selectedKeys !== this.props.selectedKeys) {
-      this.props.confirmFilter(this.props.column, this.state.selectedKeys);
+    const { selectedKeys } = this.state;
+
+    if (!shallowequal(selectedKeys, this.props.selectedKeys)) {
+      this.props.confirmFilter(this.props.column, selectedKeys);
     }
   }
 
@@ -169,14 +185,32 @@ export default class FilterMenu<T> extends React.Component<FilterMenuProps<T>, F
 
   renderFilterIcon = () => {
     const { column, locale, prefixCls } = this.props;
-    const filterIcon = column.filterIcon as any;
-    const dropdownSelectedClass = this.props.selectedKeys.length > 0 ? `${prefixCls}-selected` : '';
+    const filterd = this.props.selectedKeys.length > 0;
+    let filterIcon = column.filterIcon as any;
+    if (typeof filterIcon === 'function') {
+      filterIcon = filterIcon(filterd);
+    }
+
+    const dropdownIconClass = classNames({
+      [`${prefixCls}-selected`]: filterd,
+      [`${prefixCls}-open`]: this.getDropdownVisible(),
+    });
 
     return filterIcon ? React.cloneElement(filterIcon as any, {
       title: locale.filterTitle,
-      className: classNames(`${prefixCls}-icon`, filterIcon.props.className),
-    }) : <Icon title={locale.filterTitle} type="filter" className={dropdownSelectedClass} />;
+      className: classNames(`${prefixCls}-icon`, dropdownIconClass, filterIcon.props.className),
+      onClick: stopPropagation,
+    }) : (
+      <Icon
+        title={locale.filterTitle}
+        type="filter"
+        theme="filled"
+        className={dropdownIconClass}
+        onClick={stopPropagation}
+      />
+    );
   }
+
   render() {
     const { column, locale, prefixCls, dropdownPrefixCls, getPopupContainer } = this.props;
     // default multiple selection in filter dropdown
@@ -184,9 +218,22 @@ export default class FilterMenu<T> extends React.Component<FilterMenuProps<T>, F
     const dropdownMenuClass = classNames({
       [`${dropdownPrefixCls}-menu-without-submenu`]: !this.hasSubMenu(),
     });
-    const menus = column.filterDropdown ? (
+    let { filterDropdown } = column;
+    if (filterDropdown instanceof Function) {
+      filterDropdown = filterDropdown({
+        prefixCls: `${dropdownPrefixCls}-custom`,
+        setSelectedKeys: (selectedKeys: Array<any>) => this.setSelectedKeys({ selectedKeys }),
+        selectedKeys: this.state.selectedKeys,
+        confirm: this.handleConfirm,
+        clearFilters: this.handleClearFilters,
+        filters: column.filters,
+        getPopupContainer: (triggerNode: HTMLElement) => triggerNode.parentNode,
+      });
+    }
+
+    const menus = filterDropdown ? (
       <FilterDropdownMenuWrapper>
-        {column.filterDropdown}
+        {filterDropdown}
       </FilterDropdownMenuWrapper>
     ) : (
       <FilterDropdownMenuWrapper className={`${prefixCls}-dropdown`}>
@@ -222,8 +269,9 @@ export default class FilterMenu<T> extends React.Component<FilterMenuProps<T>, F
     return (
       <Dropdown
         trigger={['click']}
+        placement="bottomRight"
         overlay={menus}
-        visible={this.neverShown ? false : this.state.visible}
+        visible={this.getDropdownVisible()}
         onVisibleChange={this.onVisibleChange}
         getPopupContainer={getPopupContainer}
         forceRender

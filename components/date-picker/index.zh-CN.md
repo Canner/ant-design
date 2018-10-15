@@ -37,7 +37,8 @@ import locale from 'antd/lib/date-picker/locale/zh_CN';
 ```jsx
 // 默认语言为 en-US，如果你需要设置其他语言，推荐在入口文件全局设置 locale
 import moment from 'moment';
-mport 'moment/locale/zh-cn';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
 
 <DatePicker defaultValue={moment('2015-01-01', 'YYYY-MM-DD')} />
 ```
@@ -61,6 +62,7 @@ mport 'moment/locale/zh-cn';
 | placeholder | 输入框提示文字 | string\|RangePicker\[] | - |
 | popupStyle | 额外的弹出日历样式 | object | {} |
 | size | 输入框大小，`large` 高度为 40px，`small` 为 24px，默认是 32px | string | 无 |
+| suffixIcon | 自定义的选择框后缀图标 | ReactNode | - |
 | style | 自定义输入框样式 | object | {} |
 | onOpenChange | 弹出日历和关闭日历的回调 | function(status) | 无 |
 
@@ -81,7 +83,7 @@ mport 'moment/locale/zh-cn';
 | mode | 日期面板的状态 | `time|date|month|year` | 'date' |
 | renderExtraFooter | 在面板中添加额外的页脚 | () => React.ReactNode | - |
 | showTime | 增加时间选择功能 | Object\|boolean | [TimePicker Options](/components/time-picker/#API) |
-| showTime.defaultValue | 设置用户选择日期时默认的时分秒，[例子](https://ant.design/components/date-picker/#components-date-picker-demo-disabled-date) | [moment](http://momentjs.com/) | moment() |
+| showTime.defaultValue | 设置用户选择日期时默认的时分秒，[例子](#components-date-picker-demo-disabled-date) | [moment](http://momentjs.com/) | moment() |
 | showToday | 是否展示“今天”按钮 | boolean | true |
 | value | 日期 | [moment](http://momentjs.com/) | 无 |
 | onChange | 时间发生变化的回调 | function(date: moment, dateString: string) | 无 |
@@ -118,7 +120,7 @@ mport 'moment/locale/zh-cn';
 | ranges       | 预设时间范围快捷选择 | { \[range: string]: [moment](http://momentjs.com/)\[] } \| () => { \[range: string]: [moment](http://momentjs.com/)\[] } | 无 |
 | renderExtraFooter | 在面板中添加额外的页脚 | () => React.ReactNode | - |
 | showTime | 增加时间选择功能 | Object\|boolean | [TimePicker Options](/components/time-picker/#API) |
-| showTime.defaultValue | 设置用户选择日期时默认的时分秒，[例子](https://ant.design/components/date-picker/#components-date-picker-demo-disabled-date) | [moment](http://momentjs.com/)\[] | [moment(), moment()] |
+| showTime.defaultValue | 设置用户选择日期时默认的时分秒，[例子](#components-date-picker-demo-disabled-date) | [moment](http://momentjs.com/)\[] | [moment(), moment()] |
 | value | 日期 | [moment](http://momentjs.com/)\[] | 无 |
 | onCalendarChange | 待选日期发生变化的回调 | function(dates: [moment, moment], dateStrings: [string, string]) | 无 |
 | onChange | 日期范围发生变化的回调 | function(dates: [moment, moment], dateStrings: [string, string]) | 无 |

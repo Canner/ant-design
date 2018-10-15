@@ -27,6 +27,7 @@ ReactDOM.render(
     <Sider
       breakpoint="lg"
       collapsedWidth="0"
+      onBreakpoint={(broken) => { console.log(broken); }}
       onCollapse={(collapsed, type) => { console.log(collapsed, type); }}
     >
       <div className="logo" />
@@ -57,7 +58,7 @@ ReactDOM.render(
         </div>
       </Content>
       <Footer style={{ textAlign: 'center' }}>
-        Ant Design ©2016 Created by Ant UED
+        Ant Design ©2018 Created by Ant UED
       </Footer>
     </Layout>
   </Layout>,

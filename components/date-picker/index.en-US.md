@@ -61,6 +61,7 @@ The following APIs are shared by DatePicker, MonthPicker, RangePicker, WeekPicke
 | placeholder | placeholder of date input | string\|RangePicker\[] | - |
 | popupStyle | to customize the style of the popup calendar | object | {} |
 | size | determine the size of the input box, the height of `large` and `small`, are 40px and 24px respectively, while default size is 32px | string | - |
+| suffixIcon | The custom suffix icon | ReactNode | - |
 | style | to customize the style of the input box | object | {} |
 | onOpenChange | a callback function, can be executed whether the popup calendar is popped up or closed | function(status) | - |
 | onPanelChange | callback when picker panel mode is changed | function(value, mode) | - |
@@ -81,7 +82,7 @@ The following APIs are shared by DatePicker, MonthPicker, RangePicker, WeekPicke
 | format | to set the date format, refer to [moment.js](http://momentjs.com/) | string | "YYYY-MM-DD" |
 | renderExtraFooter | render extra footer in panel | () => React.ReactNode | - |
 | showTime | to provide an additional time selection | object\|boolean | [TimePicker Options](/components/time-picker/#API) |
-| showTime.defaultValue | to set default time of selected date, [demo](https://ant.design/components/date-picker/#components-date-picker-demo-disabled-date) | [moment](http://momentjs.com/) | moment() |
+| showTime.defaultValue | to set default time of selected date, [demo](#components-date-picker-demo-disabled-date) | [moment](http://momentjs.com/) | moment() |
 | showToday | whether to show "Today" button | boolean | true |
 | value | to set date | [moment](http://momentjs.com/) | - |
 | onCalendarChange | a callback function, can be executed when the start time or the end time of the range is changing | function(dates: [moment, moment], dateStrings: [string, string]) | 无 |
@@ -118,7 +119,7 @@ The following APIs are shared by DatePicker, MonthPicker, RangePicker, WeekPicke
 | ranges | preseted ranges for quick selection | { \[range: string]: [moment](http://momentjs.com/)\[] } \| () => { \[range: string]: [moment](http://momentjs.com/)\[] } | - |
 | renderExtraFooter | render extra footer in panel | () => React.ReactNode | - |
 | showTime | to provide an additional time selection | object\|boolean | [TimePicker Options](/components/time-picker/#API) |
-| showTime.defaultValue | to set default time of selected date, [demo](https://ant.design/components/date-picker/#components-date-picker-demo-disabled-date) | [moment](http://momentjs.com/)\[] | [moment(), moment()] |
+| showTime.defaultValue | to set default time of selected date, [demo](#components-date-picker-demo-disabled-date) | [moment](http://momentjs.com/)\[] | [moment(), moment()] |
 | value | to set date | \[[moment](http://momentjs.com/), [moment](http://momentjs.com/)] | - |
 | onChange | a callback function, can be executed when the selected time is changing | function(dates: [moment, moment], dateStrings: [string, string]) | - |
 | onOk | callback when click ok button | function() | - |

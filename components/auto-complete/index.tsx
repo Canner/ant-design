@@ -26,10 +26,13 @@ export interface AutoCompleteProps extends AbstractSelectProps {
   value?: SelectValue;
   defaultValue?: SelectValue;
   dataSource?: DataSourceItemType[];
+  autoFocus?: boolean;
   backfill?: boolean;
   optionLabelProp?: string;
   onChange?: (value: SelectValue) => void;
   onSelect?: (value: SelectValue, option: Object) => any;
+  onBlur?: () => any;
+  onFocus?: () => any;
   children?: ValidInputElement |
     React.ReactElement<OptionProps> |
     Array<React.ReactElement<OptionProps>>;
@@ -121,7 +124,7 @@ export default class AutoComplete extends React.Component<AutoCompleteProps, {}>
       <Select
         {...this.props}
         className={cls}
-        mode="combobox"
+        mode={Select.SECRET_COMBOBOX_MODE_DO_NOT_USE}
         optionLabelProp={optionLabelProp}
         getInputElement={this.getInputElement}
         notFoundContent={notFoundContent}

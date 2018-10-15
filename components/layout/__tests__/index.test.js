@@ -76,4 +76,36 @@ describe('Layout', () => {
     );
     expect(wrapper).toMatchSnapshot();
   });
+
+  it('should be controlled by collapsed', () => {
+    const wrapper = mount(
+      <Sider>Sider</Sider>
+    );
+    expect(wrapper.instance().state.collapsed).toBe(false);
+    wrapper.setProps({ collapsed: true });
+    expect(wrapper.instance().state.collapsed).toBe(true);
+  });
+});
+
+describe('Sider onBreakpoint', () => {
+  beforeAll(() => {
+    Object.defineProperty(window, 'matchMedia', {
+      value: jest.fn(() => {
+        return {
+          matches: true,
+          addListener: () => {},
+          removeListener: () => {},
+        };
+      }),
+    });
+  });
+
+  it('should trigger onBreakpoint', async () => {
+    const onBreakpoint = jest.fn();
+
+    mount(
+      <Sider breakpoint="md" onBreakpoint={onBreakpoint}>Sider</Sider>
+    );
+    expect(onBreakpoint).toBeCalledWith(true);
+  });
 });
