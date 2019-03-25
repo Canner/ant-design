@@ -16,7 +16,7 @@ Searchable Tree.
 ````jsx
 import { Tree, Input } from 'antd';
 
-const TreeNode = Tree.TreeNode;
+const { TreeNode } = Tree;
 const Search = Input.Search;
 
 const x = 3;
@@ -54,7 +54,7 @@ const generateList = (data) => {
     const key = node.key;
     dataList.push({ key, title: key });
     if (node.children) {
-      generateList(node.children, node.key);
+      generateList(node.children);
     }
   }
 };
